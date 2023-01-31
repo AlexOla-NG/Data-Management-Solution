@@ -1,34 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React, { useState } from "react";
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import theme from "./appTheme";
+
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Biodata from "./pages/Biodata";
+import Upload from "./pages/Upload";
+import SuccessfulUpload from "./pages/SuccessfulUpload";
+import Error from "./pages/Error";
+
+const App = () => {
+  const [auth, setAuth] = useState(
+    JSON.parse(localStorage.getItem("auth_token")) || false
+  );
+
+  const location = useLocation();
+
+  // STUB: create function to save auth token to localStorage
+  const saveToLocalStorage = () => {
+    localStorage.setItem("auth_token", JSON.stringify(auth));
+  };
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+    <>
+      <CssBaseline enableColorScheme />
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path="/login" element={<Login setAuth={setAuth} />} />
+          <Route
+            path="/"
+            element={
+              auth ? (
+                // replace Home component with Directory
+                // don't forget to update path
+                <Home onSaveToLocalStorage={saveToLocalStorage} />
+              ) : (
+                <Navigate to="/login" state={{ from: location }} replace />
+              )
+            }
+          >
+            <Route index element={<Biodata />} />
+            <Route path="/biodata" element={<Biodata />} />
+            <Route path="/upload" element={<Upload />} />
+            <Route
+              path="/upload-success"
+              element={<SuccessfulUpload setAuth={setAuth} />}
+            />
+          </Route>
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </ThemeProvider>
+    </>
+  );
+};
 
-export default App
+export default App;
