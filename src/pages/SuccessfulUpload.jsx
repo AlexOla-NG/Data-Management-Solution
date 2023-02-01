@@ -37,6 +37,8 @@ const imgStyles = {
 };
 
 const SuccessfulUpload = ({ setAuth }) => {
+  
+  // STUB: clear local storage, navigate to login
   const handleClick = () => {
     localStorage.removeItem("auth_token");
     setAuth((prevValue) => !prevValue);

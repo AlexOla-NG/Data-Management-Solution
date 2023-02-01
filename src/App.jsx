@@ -34,8 +34,6 @@ const App = () => {
             path="/"
             element={
               auth ? (
-                // replace Home component with Directory
-                // don't forget to update path
                 <Home onSaveToLocalStorage={saveToLocalStorage} />
               ) : (
                 <Navigate to="/login" state={{ from: location }} replace />
