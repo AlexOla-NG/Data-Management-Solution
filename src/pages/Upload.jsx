@@ -197,8 +197,7 @@ const Upload = () => {
             </Stack>
           </Stack>
           <Stack sx={stackUploadIconStyles}>
-            {/* TODO: add method to VisibleIcon for image preview */}
-            <VisibleIcon viewBox="0 0 24 25" />
+            <VisibleIcon viewBox="0 0 24 25" onClick={handlePreview}/>
             <TrashIcon viewBox="0 0 24 25" onClick={handleReUpload} />
           </Stack>
         </Stack>
@@ -227,6 +226,12 @@ const Upload = () => {
     }
   };
 
+    // STUB: create file url, open url in new tab
+  const handlePreview = () => {
+    let fileURL = URL.createObjectURL(files[0])
+    window.open(fileURL, "filePreviewTab")
+  }
+
   return (
     <div>
       <Sidebar
@@ -251,7 +256,7 @@ const Upload = () => {
           </Stack>
           {!isUpload ? (
             <Stack sx={stackUploadStyles} {...getRootProps()}>
-              <input {...getInputProps()} />
+              <input {...getInputProps()}/>
               <Folder viewBox="0 0 41 40" />
               <Typography>
                 <span>click here</span> to upload passport
